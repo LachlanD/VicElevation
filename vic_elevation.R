@@ -7,6 +7,17 @@ ras <- raster::raster("vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif")
 plot(ras)
 res(ras)
 low_res <- aggregate(ras, fact=10)
+res(low_res)
+
+plot(low_res)
+elmat <- raster_to_matrix(low_res)
+
+elmat %>%
+  sphere_shade(texture = "imhof1") %>%
+  add_shadow(ray_shade(elmat), 0.5) %>%
+  add_shadow(ambient_shade(elmat), 0) %>%
+  plot_map()
+
 
 #Wilsons prom crop
 ex <-as(extent(2592500, 2650000, 2250000, 2305000), 'SpatialPolygons')
