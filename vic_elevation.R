@@ -6,15 +6,15 @@ library(rayshader)
 ras <- raster::raster("vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif")
 plot(ras)
 res(ras)
-low_res <- disaggregate(ras, fact=10)
+low_res <- aggregate(ras, fact=10)
 
+#Wilsons prom crop
 ex <-as(extent(2592500, 2650000, 2250000, 2305000), 'SpatialPolygons')
 crs(ex) <- crs(ras)
 wilsons_prom <- crop(ras, ex)
-low_res <- disaggregate(ras, factor=10)
 plot(wilsons_prom)
 
-
+#Eleveation matrix for rendering
 elmat <- raster_to_matrix(wilsons_prom)
 
 
