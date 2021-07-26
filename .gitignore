@@ -1,3 +1,10 @@
+#layer and raster files
+*.tif
+*dbf
+*.prj
+*.txt
+*shp
+*shx
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
