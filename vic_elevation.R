@@ -40,9 +40,25 @@ plot(wilsons_prom)
 #Eleveation matrix for rendering
 elmat <- raster_to_matrix(wilsons_prom)
 
-
 elmat %>%
   sphere_shade(texture = "imhof1") %>%
   add_shadow(ray_shade(elmat), 0.5) %>%
   add_shadow(ambient_shade(elmat), 0) %>%
+  plot_map()
+
+#South Point
+ex <-as(extent(2610000, 2627500, 2257500, 2270000), 'SpatialPolygons')
+crs(ex) <- crs(ras)
+south_point <- crop(ras, ex)
+plot(south_point)
+
+#Eleveation matrix for rendering
+south_point_mat <- raster_to_matrix(south_point)
+
+
+
+south_point_mat %>%
+  sphere_shade(texture = "imhof1") %>%
+  add_shadow(ray_shade(south_point_mat), 0.5) %>%
+  add_shadow(ambient_shade(south_point_mat), 0) %>%
   plot_map()
