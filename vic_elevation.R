@@ -3,6 +3,7 @@ library(raster)
 library(rgdal)
 library(rayshader)
 
+#http://services.land.vic.gov.au/Vicmap_Elevation_DEM10m/vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif (12GB)
 ras <- raster::raster("vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif")
 plot(ras)
 res(ras)
