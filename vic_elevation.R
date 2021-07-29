@@ -84,9 +84,9 @@ main_lith <- gsub("^(.*?) [[:punct:]].*","\\1", lith)
 main_lith <- unlist(lapply(main_lith, '[[', 1))
 sf$MAIN_LITH<-as.factor(main_lith)
 
-
+cl<-topo.colors(unique(sf$MAIN_LITH))
 
 png("vic_lithology.png", width=1920,height=1080)
-  plot(sf, col=sf$MAIN_LITH)
-  legend(1,1,unique(sf$MAIN_LITH),col=1:length(sf$MAIN_LITH),pch=1)
+  plot(sf, col=cl[as.numeric(sf$MAIN_LITH)])
+  legend("topright",legend=unique(sf$MAIN_LITH),col=1:length(unique(sf$MAIN_LITH)), fill=cl,ncol=3)
 dev.off()
