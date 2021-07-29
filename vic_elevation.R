@@ -128,11 +128,43 @@ ag2<- unlist(lapply(ag[!is.na(ag)], '[[', 2))
 ag2<-gsub("\\).*", "", ag2,)
 
 
-sf$AGE<-as.factor(ag)
+sf$AGE<-as.factor(ag1)
 na <-is.na(sf$AGE)
 cl<-topo.colors(unique(sf$AGE[!na]))
 
 png("vic_geology_Age.png", width=1920,height=1080)
   plot(sf, col=cl[as.numeric(sf$AGE)])
-  legend("topright",legend=unique(sf$AGE[!na]),col=1:length(unique(sf$AGE[!na])), fill=cl,ncol=2)
+  legend("topright",legend=unique(sf$SUBTYPE),col=1:length(unique(sf$SUBTYPE)), fill=cl,ncol=1)
+dev.off()
+
+
+st <- sf$SUBTYPE
+summary(st)
+
+
+sy<-sf$MAP_SYMB
+dash <- substring(sy,1,1)=="-"
+
+topsymb <- strsplit(as.character(sy), "[a-z]")
+sf$TOP_SYM<-as.factor(unlist(lapply(topsymb, '[[', 1)))
+
+subsymb <- strsplit(as.character(sy), "^-?[A-Z]")
+sf$SUB_SYM <- as.factor(unlist(lapply(subsymb, '[[', 1)))
+
+
+top_col<-c("red", "purple", "brown", "black")
+levels(sf$SUBTYPE)
+
+
+png("vic_geology_RockType.png", width=1920,height=1080)
+  plot(sf, col=top_col[as.numeric(sf$SUBTYPE)])
+  legend("topright",legend=levels(sf$SUBTYPE),col=top_col, fill=top_col,ncol=1)
+dev.off()
+
+levels(sf$TOP_SYM)
+hc <- heat.colors(sf$TOP_SYM)
+
+png("vic_geology_TopType.png", width=1920,height=1080)
+plot(sf, col=hc[as.numeric(sf$TOP_SYM)])
+legend("topright",legend=levels(sf$TOP_SYM),col=hc, fill=hc,ncol=1)
 dev.off()
