@@ -152,7 +152,7 @@ subsymb <- strsplit(as.character(sy), "^-?[A-Z]")
 sf$SUB_SYM <- as.factor(unlist(lapply(subsymb, '[[', 1)))
 
 
-top_col<-c("red", "purple", "brown", "black")
+top_col<-c("red", "purple", "chocolate", "black")
 levels(sf$SUBTYPE)
 
 
