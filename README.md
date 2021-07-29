@@ -5,6 +5,9 @@
 ## Full resolution renders
 ![wilson's prom 10m relief](https://github.com/LachlanD/VicElevation/blob/master/wp_10m_render.png?raw=true)
 ![south point 10m relief](https://github.com/LachlanD/VicElevation/blob/master/south_point%2010m_render.png?raw=true)
+##Rock Types
+![Rock type](https://github.com/LachlanD/VicElevation/blob/master/vic_geology_RockType.png?raw=true)
+![Rocck code](https://github.com/LachlanD/VicElevation/blob/master/vic_geology_TopType.png?raw=true)
 ## Lithology
 ![vic lithology](https://github.com/LachlanD/VicElevation/blob/master/vic_lithology.png?raw=true)
 ## Geological Age
