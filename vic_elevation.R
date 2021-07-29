@@ -162,7 +162,7 @@ png("vic_geology_RockType.png", width=1920,height=1080)
 dev.off()
 
 levels(sf$TOP_SYM)
-hc <- heat.colors(sf$TOP_SYM)
+hc <- topo.colors(length(levels(sf$TOP_SYM)))
 
 png("vic_geology_TopType.png", width=1920,height=1080)
 plot(sf, col=hc[as.numeric(sf$TOP_SYM)])
