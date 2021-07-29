@@ -71,3 +71,22 @@ sp_mat %>%
   add_shadow(ambient_shade(sp_mat), 0) %>%
   plot_map()
 dev.off()
+
+
+
+require(maptools) 
+sf <- readShapeSpatial("layer/sg_geological_unit_250k.shp")
+plot(sf)
+summary(sf)
+
+lith<-as.character(sf$LITHOLOGY)
+main_lith <- gsub("^(.*?) [[:punct:]].*","\\1", lith)
+main_lith <- unlist(lapply(main_lith, '[[', 1))
+sf$MAIN_LITH<-as.factor(main_lith)
+
+
+
+png("vic_lithology.png", width=1920,height=1080)
+  plot(sf, col=sf$MAIN_LITH)
+  legend(1,1,unique(sf$MAIN_LITH),col=1:length(sf$MAIN_LITH),pch=1)
+dev.off()
