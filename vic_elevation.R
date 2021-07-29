@@ -79,10 +79,15 @@ sf <- readShapeSpatial("layer/sg_geological_unit_250k.shp")
 plot(sf)
 summary(sf)
 
-lith<-as.character(sf$LITHOLOGY)
-main_lith <- gsub("^(.*?) [[:punct:]].*","\\1", lith)
-main_lith <- unlist(lapply(main_lith, '[[', 1))
-sf$MAIN_LITH<-as.factor(main_lith)
+replt <- as.character(sf$REPLIT_URI)
+replt <- gsub("http://resource.geosciml.org/classifier/cgi/lithology/","",replt)
+sf$MAIN_LITH <- as.factor(replt)
+
+
+#lith<-as.character(sf$LITHOLOGY)
+#main_lith <- gsub("^(.*?) [[:punct:]].*","\\1", lith)
+#main_lith <- unlist(lapply(main_lith, '[[', 1))
+#sf$MAIN_LITH<-as.factor(main_lith)
 
 cl<-topo.colors(unique(sf$MAIN_LITH))
 
