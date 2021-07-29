@@ -3,8 +3,10 @@
 *dbf
 *.prj
 *.txt
-*shp
-*shx
+*.shp
+*.shx
+*.cpg
+
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
