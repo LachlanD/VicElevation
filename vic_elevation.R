@@ -95,3 +95,44 @@ png("vic_lithology.png", width=1920,height=1080)
   plot(sf, col=cl[as.numeric(sf$MAIN_LITH)])
   legend("topright",legend=unique(sf$MAIN_LITH),col=1:length(unique(sf$MAIN_LITH)), fill=cl,ncol=3)
 dev.off()
+
+sf <- readShapeSpatial("layer/GSTRUCZN1M.shp")
+plot(sf)
+summary(sf)
+
+sf <- readShapeSpatial("layer/geol1m_polygon.shp")
+plot(sf)
+summary(sf)
+
+cl<-topo.colors(unique(sf$AGEYOUNG))
+
+png("vic_geology_AY.png", width=1920,height=1080)
+  plot(sf, col=cl[as.numeric(sf$AGEYOUNG)])
+  legend("topright",legend=unique(sf$AGEYOUNG),col=1:length(unique(sf$AGEYOUNG)), fill=cl,ncol=2)
+dev.off()
+
+cl<-topo.colors(unique(sf$AGEOLD))
+
+png("vic_geology_AO.png", width=1920,height=1080)
+plot(sf, col=cl[as.numeric(sf$AGEOLD)])
+legend("topright",legend=unique(sf$AGEOLD),col=1:length(unique(sf$AGEOLD)), fill=cl,ncol=2)
+dev.off()
+
+age<-sf$AGEOLD
+na <- is.na(age)
+age[na]<-sf$AGEYOUNG[na]
+
+ag <-strsplit(as.character(age), '\\(')
+ag1 <- unlist(lapply(ag, '[[', 1))
+ag2<- unlist(lapply(ag[!is.na(ag)], '[[', 2))
+ag2<-gsub("\\).*", "", ag2,)
+
+
+sf$AGE<-as.factor(ag)
+na <-is.na(sf$AGE)
+cl<-topo.colors(unique(sf$AGE[!na]))
+
+png("vic_geology_Age.png", width=1920,height=1080)
+  plot(sf, col=cl[as.numeric(sf$AGE)])
+  legend("topright",legend=unique(sf$AGE[!na]),col=1:length(unique(sf$AGE[!na])), fill=cl,ncol=2)
+dev.off()
