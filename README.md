@@ -1,4 +1,6 @@
 # VicElevation
+### 3d render with geology overlay 
+![geology render](https://github.com/LachlanD/VicElevation/blob/master/rock_overlay_render.png?raw=true)
 ## Elevation downsample
 ![vic elevation plot](https://github.com/LachlanD/VicElevation/blob/master/vic_elevation_downsampled.png?raw=true)
 ![vic downsampled relief map](https://github.com/LachlanD/VicElevation/blob/master/vic_downsampled_render.png?raw=true)
