@@ -1,11 +1,13 @@
 devtools::install_github("tylermorganwall/rayshader")
-library(raster)
-library(rgdal)
-library(rayshader)
+require(raster)
+require(rgdal)
+require(rayshader)
+require(maptools)
 
 #http://services.land.vic.gov.au/Vicmap_Elevation_DEM10m/vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif (12GB)
 ras <- raster::raster("vmelev_dem10m_Geotiff_GDA94_Vicgrid.tif")
 plot(ras)
+
 res(ras)
 
 scaling_factor <- 25
@@ -101,6 +103,7 @@ plot(sf)
 summary(sf)
 
 sf <- readShapeSpatial("layer/geol1m_polygon.shp")
+
 plot(sf)
 summary(sf)
 
@@ -143,7 +146,6 @@ summary(st)
 
 
 sy<-sf$MAP_SYMB
-dash <- substring(sy,1,1)=="-"
 
 topsymb <- strsplit(as.character(sy), "[a-z]")
 sf$TOP_SYM<-as.factor(unlist(lapply(topsymb, '[[', 1)))
@@ -153,18 +155,77 @@ sf$SUB_SYM <- as.factor(unlist(lapply(subsymb, '[[', 1)))
 
 
 top_col<-c("red", "purple", "chocolate", "black")
-levels(sf$SUBTYPE)
+leg <- gsub("Intrusive", "Intrusive (Igneous)", levels(sf$SUBTYPE))
+leg <- gsub("Structural", "Structural (Faults)", leg)
 
 
 png("vic_geology_RockType.png", width=1920,height=1080)
   plot(sf, col=top_col[as.numeric(sf$SUBTYPE)])
-  legend("topright",legend=levels(sf$SUBTYPE),col=top_col, fill=top_col,ncol=1)
+  legend("topright",legend=leg,col=top_col, fill=top_col,ncol=1)
 dev.off()
 
 levels(sf$TOP_SYM)
 hc <- topo.colors(length(levels(sf$TOP_SYM)))
 
+lv_sy <- levels(sy)
+
+y<-list()
+
+for (i in levels(sf$TOP_SYM)){
+  x <- startsWith(lv_sy, i)
+  
+  y[i]<-paste(lv_sy[x], collapse=" ")
+}
+
 png("vic_geology_TopType.png", width=1920,height=1080)
 plot(sf, col=hc[as.numeric(sf$TOP_SYM)])
-legend("topright",legend=levels(sf$TOP_SYM),col=hc, fill=hc,ncol=1)
+legend("topright",legend=y,col=hc, fill=hc,ncol=1)
+dev.off()
+
+
+
+sfo<-readOGR("layer")
+sfo<-spTransform(sfo, crs(low_res))
+st <- as.factor(sfo$SUBTYPE)
+sfo_ras<-rasterize(sfo, low_res, st)
+plot(sfo_ras, col=top_col)
+
+p<-raster_to_matrix(sfo_ras)
+
+elmat[is.na(p)]<-NA
+
+p[p==1]<-"red"
+p[p==2]<-"purple"
+p[p==3]<-"chocolate"
+p[p==4]<-"black"
+#p[is.na(p)]<-"blue"
+
+c<-apply(p, c(1,2), col2rgb)/255
+
+c<-aperm(c, c(3,2,1))
+
+
+
+
+png("overlay.png")
+par(mar=c(0, 0, 0, 0))
+image(p, useRaster=TRUE, axes=FALSE)
+dev.off()
+
+#
+#  plot(sfo, col=top_col[as.numeric(as.factor(sfo$SUBTYPE))])
+#  legend("topright",legend=leg,col=top_col, fill=top_col,ncol=1)
+#dev.off()
+
+
+#overlay_img <- png::readPNG("overlay.png")
+
+
+png("rock_overlay_render.png", width=nrow(elmat), height=ncol(elmat))
+elmat %>%
+  sphere_shade() %>%
+  add_overlay(c,alphalayer =0.9) %>%
+  add_shadow(ray_shade(elmat), 0.5) %>%
+  add_shadow(ambient_shade(elmat), 0) %>%
+  plot_map()
 dev.off()
