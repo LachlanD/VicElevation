@@ -1,6 +1,7 @@
 # VicElevation
 ### 3d render with geology overlay 
 ![geology render](https://github.com/LachlanD/VicElevation/blob/master/rock_overlay_render.png?raw=true)
+![wp lithology render](https://github.com/LachlanD/VicElevation/blob/master/wp_rock_overlay_render.png?raw=true)
 ## Elevation downsample
 ![vic elevation plot](https://github.com/LachlanD/VicElevation/blob/master/vic_elevation_downsampled.png?raw=true)
 ![vic downsampled relief map](https://github.com/LachlanD/VicElevation/blob/master/vic_downsampled_render.png?raw=true)
@@ -12,5 +13,6 @@
 ![Rocck code](https://github.com/LachlanD/VicElevation/blob/master/vic_geology_TopType.png?raw=true)
 ## Lithology
 ![vic lithology](https://github.com/LachlanD/VicElevation/blob/master/vic_lithology.png?raw=true)
+![wp lithology](https://github.com/LachlanD/VicElevation/blob/master/wp_lithology.png?raw=true)
 ## Geological Age
 ![vic geological age](https://github.com/LachlanD/VicElevation/blob/master/vic_geology_Age.png?raw=true)
