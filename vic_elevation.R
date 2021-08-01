@@ -76,7 +76,6 @@ dev.off()
 
 
 
-require(maptools) 
 sf <- readShapeSpatial("layer/sg_geological_unit_250k.shp")
 plot(sf)
 summary(sf)
@@ -184,9 +183,8 @@ dev.off()
 
 
 
-sfo<-readOGR("layer")
+sfo<-readOGR("layer/geol1m_polygon")
 sfo<-spTransform(sfo, crs(low_res))
-st <- as.factor(sfo$SUBTYPE)
 sfo_ras<-rasterize(sfo, low_res, st)
 plot(sfo_ras, col=top_col)
 
@@ -227,5 +225,40 @@ elmat %>%
   add_overlay(c,alphalayer =0.9) %>%
   add_shadow(ray_shade(elmat), 0.5) %>%
   add_shadow(ambient_shade(elmat), 0) %>%
+  plot_map()
+dev.off()
+
+sf <- readOGR("layer/sg_geological_unit_250k")
+replt <- as.character(sf$REPLIT_URI)
+replt <- gsub("http://resource.geosciml.org/classifier/cgi/lithology/","",replt)
+sf$MAIN_LITH <- as.factor(replt)
+
+sfwp<-spTransform(sf, crs(wilsons_prom))
+lt<-rasterize(sfwp, wilsons_prom, as.factor(sf$MAIN_LITH))
+
+lvls<-levels(sf$MAIN_LITH)
+
+lt@data@values<-factor(lvls[lt@data@values])
+cl<-topo.colors(nlevels(lt@data@values))
+
+
+image(lt, col=cl)
+legend("bottomright", legend=levels(lt@data@values), col=cl, fill=cl)
+
+
+lt@data@values<-cl[as.numeric(lt@data@values)]
+ltmat<-raster_to_matrix(lt)
+
+
+z<-apply(ltmat, c(1,2), col2rgb)/255
+z<-aperm(z, c(3,2,1))
+
+
+png("wp_rock_overlay_render.png", width=nrow(wilsons_prom), height=ncol(wilsons_prom))
+wp_mat %>%
+  sphere_shade() %>%
+  add_overlay(z,alphalayer =0.9) %>%
+  add_shadow(ray_shade(wp_mat), 0.5) %>%
+  add_shadow(ambient_shade(wp_mat), 0) %>%
   plot_map()
 dev.off()
